@@ -27,12 +27,19 @@ namespace ForumAPI.Controllers
         /// <summary>
         /// Retrieves all posts.
         /// </summary>
+        /// <param name="author">The author of the posts.</param>
+        /// <param name="startDate">The start date of the posts.</param>
+        /// <param name="endDate">The end date of the posts.</param>
         /// <returns>A list of post DTOs.</returns>
         [HttpGet]
-        public async Task<ActionResult<List<PostDTO>>> Get()
+        public async Task<ActionResult<List<PostDTO>>> Get(string? author = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            var messages = await _postService.GetAllMessagesAsync();
-            return Ok(messages);
+            var posts = await _postService.GetAllMessagesAsync(author, startDate, endDate);
+            if (posts == null)
+            {
+                return NotFound();
+            }
+            return posts;
         }
 
         /// <summary>
@@ -52,6 +59,11 @@ namespace ForumAPI.Controllers
             return Ok(message);
         }     
 
+        /// <summary>
+        /// Creates a new post.
+        /// </summary>
+        /// <param name="createPostDTO">The post DTO.</param>
+        /// <returns>The created post DTO.</returns>
         [HttpPost,Authorize]
         public async Task<ActionResult<PostDTO>> CreatePost([FromBody] CreatePostDTO createPostDTO)
         {

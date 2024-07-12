@@ -28,9 +28,26 @@ namespace ForumAPI.Services
         /// Retrieves posts from the data store.
         /// </summary>
         /// <returns>A list of post DTOs.</returns>
-        private async Task<List<PostDTO>> GetPostsFromTheDataStore()
+        private async Task<List<PostDTO>> GetPostsFromTheDataStore(string? author = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            var messages = await _context.Posts
+            var query = _context.Posts.AsQueryable();
+        
+            if (!string.IsNullOrEmpty(author))
+            {
+                query = query.Where(m => m.Author == author);
+            }
+        
+            if (startDate.HasValue)
+            {
+                query = query.Where(m => m.PostedDate >= startDate.Value);
+            }
+        
+            if (endDate.HasValue)
+            {
+                query = query.Where(m => m.PostedDate <= endDate.Value);
+            }
+        
+            var messages = await query
                 .Select(m => new PostDTO
                 {
                     Id = m.Id,
@@ -39,7 +56,7 @@ namespace ForumAPI.Services
                     PostedDate = m.PostedDate
                 })
                 .ToListAsync();
-
+        
             return messages;
         }
 
@@ -47,9 +64,9 @@ namespace ForumAPI.Services
         /// Retrieves all messages asynchronously.
         /// </summary>
         /// <returns>A list of post DTOs.</returns>
-        public async Task<List<PostDTO>> GetAllMessagesAsync()
+        public async Task<List<PostDTO>> GetAllMessagesAsync(string? author = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            return await GetPostsFromTheDataStore();
+            return await GetPostsFromTheDataStore(author, startDate, endDate);
         }
 
         /// <summary>
