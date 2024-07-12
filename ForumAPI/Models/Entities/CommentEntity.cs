@@ -9,6 +9,5 @@ public class CommentEntity
 	public string Content { get; set; } = string.Empty;
 	public DateTime PostedDate { get; set; }
 	public string Author { get; set; }  = string.Empty;
-	public int ForumMessageId { get; set; }
 	public PostEntity ForumPost { get; set; }
 }

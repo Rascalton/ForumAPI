@@ -17,7 +17,7 @@ namespace ForumAPI.Services
 		public async Task<List<CommentDTO>> GetCommentsByPostIdAsync(int postId)
 		{
 			return await _context.Comments
-				.Where(c => c.ForumMessageId == postId)
+				.Where(c => c.ForumPost.Id == postId)
 				.Select(c => new CommentDTO
 				{
 					Id = c.Id,
