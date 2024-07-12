@@ -1,6 +1,6 @@
-namespace ForumAPI;
+namespace ForumAPI.Models.DTOs;
 
-public class WeatherForecast
+public class WeatherForecastDTO
 {
     public DateOnly Date { get; set; }
 
