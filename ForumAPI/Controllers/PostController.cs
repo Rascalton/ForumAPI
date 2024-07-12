@@ -33,6 +33,22 @@ namespace ForumAPI.Controllers
             var messages = await _postService.GetAllMessagesAsync();
             return Ok(messages);
         }
-       
+
+        /// <summary>
+        /// Retrieves a post by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the post.</param>
+        /// <returns>The post DTO.</returns>
+        /// <response code="200">Returns the post DTO.</response>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PostDTO>> GetMessageById(int id)
+        {
+            var message = await _postService.GetPostByIdAsync(id);
+            if (message == null)
+            {
+                return NotFound();
+            }
+            return Ok(message);
+        }       
     }
 }

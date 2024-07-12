@@ -10,7 +10,7 @@ namespace ForumAPI.Services
     public class PostService
     {
 
-         // The data context used to interact with the data store.
+        // The data context used to interact with the data store.
         private readonly DataContext _context;
 
         /// <summary>
@@ -29,17 +29,17 @@ namespace ForumAPI.Services
         /// <returns>A list of post DTOs.</returns>
         private async Task<List<PostDTO>> GetPostsFromTheDataStore()
         {
-        var messages = await _context.Posts
-            .Select(m => new PostDTO
-            {
-                Id = m.Id,
-                Author = m.Author,
-                Message = m.Message,
-                PostedDate = m.PostedDate
-            })
-            .ToListAsync();
+            var messages = await _context.Posts
+                .Select(m => new PostDTO
+                {
+                    Id = m.Id,
+                    Author = m.Author,
+                    Message = m.Message,
+                    PostedDate = m.PostedDate
+                })
+                .ToListAsync();
 
-        return messages;
+            return messages;
         }
 
         /// <summary>
@@ -49,6 +49,27 @@ namespace ForumAPI.Services
         public async Task<List<PostDTO>> GetAllMessagesAsync()
         {
             return await GetPostsFromTheDataStore();
+        }
+
+        /// <summary>
+        /// Retrieves a message by its ID asynchronously.
+        /// </summary>
+        /// <param name="id">The ID of the message.</param>
+        /// <returns>The post DTO.</returns>
+        public async Task<PostDTO?> GetPostByIdAsync(int id)
+        {
+            var message = await _context.Posts
+                .Where(m => m.Id == id)
+                .Select(m => new PostDTO
+                {
+                    Id = m.Id,
+                    Author = m.Author,
+                    Message = m.Message,
+                    PostedDate = m.PostedDate
+                })
+                .FirstOrDefaultAsync();
+
+            return message;
         }
     }
 }
