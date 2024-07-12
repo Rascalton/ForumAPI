@@ -13,6 +13,7 @@ public class PostEntity
 	[Required]
 	public string Message { get; set; } = string.Empty;
 	public DateTime PostedDate { get; set; }
+	public ICollection<CommentEntity> Comments { get; set; } = new List<CommentEntity>();
 
 	// Additional fields specific to the database entity
 }
