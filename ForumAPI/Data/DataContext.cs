@@ -11,4 +11,5 @@ public class DataContext : IdentityDbContext
 
     public DbSet<PostEntity> Posts { get; set; }
     public DbSet<CommentEntity> Comments { get; set; }
+    public DbSet<LikeEntity> Likes { get; set; }
 }
