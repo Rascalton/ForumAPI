@@ -1,5 +1,6 @@
 using ForumAPI.Data;
 using ForumAPI.Models.DTOs;
+using ForumAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ForumAPI.Services
@@ -71,5 +72,34 @@ namespace ForumAPI.Services
 
             return message;
         }
+
+        /// <summary>
+        /// Adds a message asynchronously.
+        /// </summary>
+        /// <param name="createPostDTO">The post DTO to add.</param>
+        /// <returns>The added post DTO.</returns>
+        public async Task<PostDTO> AddMessageAsync(CreatePostDTO createPostDTO)
+        {
+            var messageEntity = new PostEntity
+            {
+                Author = createPostDTO.Author,
+                Message = createPostDTO.Message,
+                PostedDate = DateTime.UtcNow 
+                                             
+            };
+
+            _context.Posts.Add(messageEntity);
+            await _context.SaveChangesAsync();
+
+            return new PostDTO
+            {
+                Id = messageEntity.Id,
+                Author = messageEntity.Author,
+                Message = messageEntity.Message,
+                PostedDate = messageEntity.PostedDate
+            };
+        }
+
+
     }
 }

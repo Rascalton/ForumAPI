@@ -41,7 +41,7 @@ namespace ForumAPI.Controllers
         /// <returns>The post DTO.</returns>
         /// <response code="200">Returns the post DTO.</response>
         [HttpGet("{id}")]
-        public async Task<ActionResult<PostDTO>> GetMessageById(int id)
+        public async Task<ActionResult<PostDTO>> GetPostById(int id)
         {
             var message = await _postService.GetPostByIdAsync(id);
             if (message == null)
@@ -49,6 +49,21 @@ namespace ForumAPI.Controllers
                 return NotFound();
             }
             return Ok(message);
-        }       
+        }     
+
+        [HttpPost]
+        public async Task<ActionResult<PostDTO>> CreatePost([FromBody] CreatePostDTO createPostDTO)
+        {
+            try
+            {
+                var newMessage = await _postService.AddMessageAsync(createPostDTO);
+                return CreatedAtAction(nameof(GetPostById), new { id = newMessage.Id }, newMessage);
+            }
+            catch 
+            {
+                
+                return StatusCode(500, "An error occurred while creating the message.");
+            }
+        }          
     }
 }
