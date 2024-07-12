@@ -1,5 +1,6 @@
-
+using ForumAPI.Data;
 using ForumAPI.Models.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace ForumAPI.Services
 {
@@ -8,20 +9,37 @@ namespace ForumAPI.Services
     /// </summary>
     public class PostService
     {
+
+         // The data context used to interact with the data store.
+        private readonly DataContext _context;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostService"/> class.
+        /// </summary>
+        /// <param name="context">The data context used to interact with the data store.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the context is null.</exception>
+        public PostService(DataContext context)
+        {
+            _context = context;
+        }
+
         /// <summary>
         /// Retrieves posts from the data store.
         /// </summary>
         /// <returns>A list of post DTOs.</returns>
         private async Task<List<PostDTO>> GetPostsFromTheDataStore()
         {
-            // Create dummy data
-            var posts = new List<PostDTO>
+        var messages = await _context.Posts
+            .Select(m => new PostDTO
             {
-                new PostDTO { Id = 1, Post = "Hello, World!", PostedDate = DateTime.Now },
-                new PostDTO { Id = 2, Post = "Goodbye, World!", PostedDate = DateTime.Now }
-            };
+                Id = m.Id,
+                Author = m.Author,
+                Message = m.Message,
+                PostedDate = m.PostedDate
+            })
+            .ToListAsync();
 
-            return posts;
+        return messages;
         }
 
         /// <summary>

@@ -11,9 +11,14 @@ namespace ForumAPI.Models.DTOs
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets the author of the post.
+        /// </summary>
+        public string Author { get; set; } = string.Empty;
+
+        /// <summary>
         /// Gets or sets the content of the post.
         /// </summary>
-        public string Post { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the date when the post was posted.

@@ -27,7 +27,7 @@ namespace ForumAPI.Controllers
         /// Retrieves all posts.
         /// </summary>
         /// <returns>A list of post DTOs.</returns>
-        /// [HttpGet]
+        [HttpGet]
         public async Task<ActionResult<List<PostDTO>>> Get()
         {
             var messages = await _postService.GetAllMessagesAsync();
