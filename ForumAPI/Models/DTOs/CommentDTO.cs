@@ -1,7 +1,9 @@
+namespace ForumAPI.Models.DTOs;
 public class CommentDTO
 {
     public int Id { get; set; }
     public string Content { get; set; } = string.Empty;
     public DateTime PostedDate { get; set; }
     public string Author { get; set; }= string.Empty;
+    public int ForumPostId { get; set; }
 }
