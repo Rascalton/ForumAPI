@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ForumAPI.Services;
 using ForumAPI.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace ForumAPI.Controllers
@@ -51,7 +52,7 @@ namespace ForumAPI.Controllers
             return Ok(message);
         }     
 
-        [HttpPost]
+        [HttpPost,Authorize]
         public async Task<ActionResult<PostDTO>> CreatePost([FromBody] CreatePostDTO createPostDTO)
         {
             try

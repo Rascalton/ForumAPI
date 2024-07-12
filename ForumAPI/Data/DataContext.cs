@@ -1,8 +1,9 @@
 using ForumAPI.Models.Entities;
-using Microsoft.EntityFrameworkCore; // Add a reference to the Microsoft.EntityFrameworkCore assembly
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore; 
 namespace ForumAPI.Data;
 
-public class DataContext : DbContext
+public class DataContext : IdentityDbContext
 {
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
