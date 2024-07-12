@@ -30,11 +30,13 @@ namespace ForumAPI.Controllers
         /// <param name="author">The author of the posts.</param>
         /// <param name="startDate">The start date of the posts.</param>
         /// <param name="endDate">The end date of the posts.</param>
+        /// <param name="pageNumber">The page number.</param>
+        /// <param name="pageSize">The page size.</param>
         /// <returns>A list of post DTOs.</returns>
         [HttpGet]
-        public async Task<ActionResult<List<PostDTO>>> Get(string? author = null, DateTime? startDate = null, DateTime? endDate = null)
+        public async Task<ActionResult<List<PostDTO>>> Get(string? author = null, DateTime? startDate = null, DateTime? endDate = null, int pageNumber = 1, int pageSize = 10)
         {
-            var posts = await _postService.GetAllMessagesAsync(author, startDate, endDate);
+            var posts = await _postService.GetAllMessagesAsync(author, startDate, endDate, pageNumber, pageSize);
             if (posts == null)
             {
                 return NotFound();

@@ -28,7 +28,7 @@ namespace ForumAPI.Services
         /// Retrieves posts from the data store.
         /// </summary>
         /// <returns>A list of post DTOs.</returns>
-        private async Task<List<PostDTO>> GetPostsFromTheDataStore(string? author = null, DateTime? startDate = null, DateTime? endDate = null)
+        private async Task<List<PostDTO>> GetPostsFromTheDataStore(string? author = null, DateTime? startDate = null, DateTime? endDate = null, int pageNumber = 1, int pageSize = 10)
         {
             var query = _context.Posts.AsQueryable();
         
@@ -47,6 +47,9 @@ namespace ForumAPI.Services
                 query = query.Where(m => m.PostedDate <= endDate.Value);
             }
         
+            // Apply pagination
+            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+        
             var messages = await query
                 .Select(m => new PostDTO
                 {
@@ -61,12 +64,17 @@ namespace ForumAPI.Services
         }
 
         /// <summary>
-        /// Retrieves all messages asynchronously.
+        /// Retrieves all messages asynchronously with pagination.
         /// </summary>
+        /// <param name="author">The author to filter by.</param>
+        /// <param name="startDate">The start date to filter by.</param>
+        /// <param name="endDate">The end date to filter by.</param>
+        /// <param name="pageNumber">The page number for pagination.</param>
+        /// <param name="pageSize">The number of items per page.</param>
         /// <returns>A list of post DTOs.</returns>
-        public async Task<List<PostDTO>> GetAllMessagesAsync(string? author = null, DateTime? startDate = null, DateTime? endDate = null)
+        public async Task<List<PostDTO>> GetAllMessagesAsync(string? author = null, DateTime? startDate = null, DateTime? endDate = null, int pageNumber = 1, int pageSize = 10)
         {
-            return await GetPostsFromTheDataStore(author, startDate, endDate);
+            return await GetPostsFromTheDataStore(author, startDate, endDate, pageNumber, pageSize);
         }
 
         /// <summary>
